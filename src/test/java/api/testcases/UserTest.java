@@ -35,11 +35,13 @@ public class UserTest {
 	
 	@Test(priority=1)
 	public void testCreatUser() {
-		System.out.println("========Create User Data=========");
+		System.out.println("=================================");
+		System.out.println("Create User Data");
+		
 		Response response = userEndPoints.createUser(userPayload);
 		
 		System.out.println("Fetching data for Create User: " + userPayload.getUsername());
-		
+		System.out.println("=================================");
 		//log response
 		response.then().log().all();
 		
@@ -49,12 +51,15 @@ public class UserTest {
 
 	@Test(priority=2)
 	public void testGetUserData() {
-			System.out.println("============Get User Data=========");
-		 // Use Awaitility to wait for the user to be created before fetching
+			System.out.println("=================================");
+			System.out.println("Get User Data");
+		
+		   //Use Awaitility to wait for the user to be created before fetching
 	       await().atMost(5, TimeUnit.SECONDS).until(() -> {
 	       Response response = userEndPoints.getUser(this.userPayload.getUsername());
 
 	       System.out.println("Fetching data for Get User: " + this.userPayload.getUsername());
+	       System.out.println("=================================");
 			
 	       //log response
 	       response.then().log().all();
@@ -67,25 +72,38 @@ public class UserTest {
 	
 	@Test(priority=3)
 	public void testUpdatetUser() {
-		System.out.println("===========Update User Data========");
+		
+		System.out.println("=================================");
+		System.out.println("Update User Data");
+		System.out.println("=================================");
 		
 		userPayload.setFirstName(faker.name().firstName());
 		Response response = userEndPoints.updateUser(this.userPayload.getUsername(),userPayload);
 		
-		
-		System.out.println("Fetching data for Update User: " + this.userPayload.getUsername());
+		//System.out.println("Fetching data for Update User: " + this.userPayload.getUsername());
 		
 		//log response
 		response.then().log().all();
 		
 		//validation
 		Assert.assertEquals(response.getStatusCode(),200);
+		
+		//Read User data to check if first name is updated
+		Response  responsePostUpdate = userEndPoints.getUser(this.userPayload.getUsername());
+		System.out.println("=================================");
+		System.out.println("After Update User Data");
+		System.out.println("=================================");
+		responsePostUpdate.then().log().all();
+		
+		
 	}
 	
 	
 	@Test(priority=4)
 	public void testDeletetUser() {
-		System.out.println("============Delete User Data=========");
+		System.out.println("=================================");
+		System.out.println("Delete User Data");
+		System.out.println("=================================");
 		
 		Response response = userEndPoints.deleteUser(this.userPayload.getUsername());
 		System.out.println("Fetching data for user to delete: " + this.userPayload.getUsername());
