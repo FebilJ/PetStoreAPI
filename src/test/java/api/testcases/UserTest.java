@@ -1,5 +1,7 @@
 package api.testcases;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.github.javafaker.Faker;
@@ -17,6 +19,7 @@ public class UserTest {
 	
 	Faker faker; //class level object creation
 	user userPayload;
+	public static Logger Logger;
 	
 	@BeforeClass
 	public void generateTestData() {
@@ -31,10 +34,13 @@ public class UserTest {
 		userPayload.setEmail(faker.internet().safeEmailAddress());
 		userPayload.setPassword(faker.internet().password(5, 10));
 		userPayload.setPhone(faker.phoneNumber().cellPhone());
+		
+		///obtain logger
+        Logger = LogManager.getLogger("PetStoreAPI");
 	}
 	
 	@Test(priority=1)
-	public void testCreatUser() {
+	public void testCreateUser() {
 		System.out.println("=================================");
 		System.out.println("Create User Data");
 		
@@ -47,12 +53,15 @@ public class UserTest {
 		
 		//validation
 		Assert.assertEquals(response.getStatusCode(),200);
+		
+		//log
+		Logger.info("Create User Data executed");
 	}
 
 	@Test(priority=2)
 	public void testGetUserData() {
-			System.out.println("=================================");
-			System.out.println("Get User Data");
+		   System.out.println("=================================");
+		   System.out.println("Get User Data");
 		
 		   //Use Awaitility to wait for the user to be created before fetching
 	       await().atMost(5, TimeUnit.SECONDS).until(() -> {
@@ -67,6 +76,9 @@ public class UserTest {
 	       //validation
 	       return response.getStatusCode() == 200; // Wait until the status code is 200
 	       });
+	       
+	     //log
+		 Logger.info("Get User Data executed");
 	}
 	
 	
@@ -95,7 +107,8 @@ public class UserTest {
 		System.out.println("=================================");
 		responsePostUpdate.then().log().all();
 		
-		
+		//log
+		Logger.info("Update User Data executed");
 	}
 	
 	
@@ -113,5 +126,8 @@ public class UserTest {
 		
 		//validation
 		Assert.assertEquals(response.getStatusCode(),200);
+		
+		//log
+		Logger.info("Delete User Data executed");
 	}
 }

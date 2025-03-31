@@ -7,7 +7,7 @@ public class Routes {
       Delete User DELETE https://petstore.swagger.io/v2/user/{username}*/
 
     //base url
-    public static String base_url=" https://petstore.swagger.io/v2";
+    public static String base_url="https://petstore.swagger.io/v2";
     
     //user module urls
     public static String post_url = base_url + "/user";
